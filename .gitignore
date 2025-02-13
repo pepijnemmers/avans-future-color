@@ -1,0 +1,21 @@
+# Tailwind CSS build artifacts
+node_modules/
+dist/
+build/
+*.log
+
+# Tailwind CSS config files
+tailwind.config.js
+tailwind.config.cjs
+tailwind.config.ts
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
