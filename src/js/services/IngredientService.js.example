@@ -1,0 +1,42 @@
+import { Ingredient } from "../models/Ingredient.js";
+
+export class IngredientService {
+    constructor() {
+        this.ingredients = this.loadFromLocalStorage();
+    }
+
+    // Nieuw ingrediënt toevoegen en opslaan
+    addIngredient(name, mixTime, mixSpeed, color, structure) {
+        const ingredient = new Ingredient(name, mixTime, mixSpeed, color, structure);
+        this.ingredients.push(ingredient);
+        this.saveToLocalStorage();
+        return ingredient;
+    }
+
+    // Ingrediënt verwijderen
+    removeIngredient(name) {
+        this.ingredients = this.ingredients.filter(ingredient => ingredient.name !== name);
+        this.saveToLocalStorage();
+    }
+
+    // Ingrediënten ophalen
+    getAllIngredients() {
+        return this.ingredients;
+    }
+
+    // Ingrediënt zoeken op naam
+    findIngredientByName(name) {
+        return this.ingredients.find(ingredient => ingredient.name === name) || null;
+    }
+
+    // Ingrediënten opslaan in LocalStorage
+    saveToLocalStorage() {
+        localStorage.setItem("ingredients", JSON.stringify(this.ingredients));
+    }
+
+    // Ingrediënten laden vanuit LocalStorage
+    loadFromLocalStorage() {
+        let storedIngredients = JSON.parse(localStorage.getItem("ingredients")) || [];
+        return storedIngredients.map(i => new Ingredient(i.name, i.mixTime, i.mixSpeed, i.color, i.structure));
+    }
+}

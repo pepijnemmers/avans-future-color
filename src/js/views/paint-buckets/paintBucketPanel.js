@@ -1,14 +1,13 @@
 /**
- * Renders panel with paint buckets
- * Paint buckets will be rendered in the div with id paint-buckets
- * @returns {string} HTML for the paint buckets panel
+ * @returns {template} The template with the paint bucket panel
  */
 export function renderBucketPanel() {
-    return `
+    const template = document.createElement("template");
+    template.innerHTML = `
         <div class="card grow-0">
             <header class="flex justify-between align-center">
                 <h2>Verfpotten</h2>
-                <button class="btn-dark">Aanmaken</button>
+                <button class="btn-dark" id="createBucketBtn">Aanmaken</button>
             </header>
             <p>
                 Sleep een pot (met een mix) naar een mengmachine om deze te
@@ -19,4 +18,5 @@ export function renderBucketPanel() {
             </div> 
         </div>
     `;
+    return template;
 }

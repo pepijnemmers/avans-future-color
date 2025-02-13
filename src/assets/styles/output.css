@@ -654,8 +654,14 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .\!bg-red-600 {
+    background-color: var(--color-red-600) !important;
+  }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
+  }
+  .bg-red-600 {
+    background-color: var(--color-red-600);
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);

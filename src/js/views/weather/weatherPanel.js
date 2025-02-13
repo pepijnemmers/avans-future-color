@@ -1,9 +1,9 @@
 /**
- * Renders the weather panel
- * @returns {string} HTML for the weather panel
+ * @returns {template} The template with the weather panel
  */
 export function renderWeatherPanel() {
-    return `
+    const template = document.createElement("template");
+    template.innerHTML = `
         <div class="card">
             <h2>Weerbericht</h2>
             <p>Selecteer de locatie van de menghallen.</p>
@@ -13,4 +13,5 @@ export function renderWeatherPanel() {
             </div>
         </div>    
     `;
+    return template;
 }

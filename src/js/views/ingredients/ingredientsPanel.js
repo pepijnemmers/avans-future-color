@@ -1,13 +1,13 @@
 /**
- * Renders the ingredient panel
- * @returns {string} HTML for the ingredient panel
+ * @returns {template} The template with the ingredient panel
  */
 export function renderIngredientPanel() {
-    return `
+    const template = document.createElement("template");
+    template.innerHTML = `
         <div class="card grow">
             <header class="flex justify-between align-center mb-2">
                 <h2>Ingrediënten</h2>
-                <button class="btn-dark">Aanmaken</button>
+                <button class="btn-dark" id="createIngredientBtn">Aanmaken</button>
             </header>
             <p>
                 Sleep de ingrediënten naar een pot door de kwast te
@@ -18,4 +18,5 @@ export function renderIngredientPanel() {
             </div>
         </div>
     `;
+    return template;
 }
