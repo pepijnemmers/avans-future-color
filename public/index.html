@@ -4,38 +4,34 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Future Color</title>
+        <link
+            rel="shortcut icon"
+            href="/src/assets/images/logo-icon.png"
+            type="image/x-icon"
+        />
         <link href="/src/assets/styles/output.css" rel="stylesheet" />
         <script type="module" src="/src/js/app.js" defer></script>
     </head>
-    <body class="flex flex-row space-x-4 p-4 min-h-screen">
-        <div class="basis-2/3 flex flex-col">
-            <header class="flex flex-row justify-between items-center grow-0">
-                <nav class="inline-flex justify-center space-x-2 card !p-2">
-                    <button class="btn-light">Home</button>
-                    <button class="btn-light">Menghal 1</button>
-                    <button class="btn-light">Menghal 2</button>
-                    <button class="btn-light">Kleuren testen</button>
-                </nav>
-                <div>
-                    <label class="mr-2">Kleurformat</label>
-                    <select id="color-format">
-                        <option value="hex">Hex</option>
-                        <option value="rgb">RGB</option>
-                        <option value="hsl">HSL</option>
-                    </select>
-                </div>
-            </header>
+    <body class="flex flex-col min-h-screen p-4">
+        <header class="flex flex-row justify-between items-center container">
+            <nav
+                class="inline-flex justify-center space-x-2 bg-gray-200 p-2 rounded-md"
+            >
+                <button class="btn-light">Home</button>
+                <button class="btn-transparent">Menghal 1</button>
+                <button class="btn-transparent">Menghal 2</button>
+                <button class="btn-transparent">Kleuren testen</button>
+            </nav>
+            <div>
+                <label class="mr-2">Kleurformat</label>
+                <select id="color-format">
+                    <option value="hex">Hex</option>
+                    <option value="rgb">RGB</option>
+                    <option value="hsl">HSL</option>
+                </select>
+            </div>
+        </header>
 
-            <main id="app" class="my-4 grow bg-gray-200 rounded-md">
-                <!-- Dynamic content will be loaded here -->
-            </main>
-
-            <!-- // TODO: Template tags van maken en dan vullen (alle plekken) -->
-            <div id="paintBucketPanel"></div>
-        </div>
-        <aside class="basis-1/3 space-y-4 flex flex-col">
-            <div id="weatherPanel"></div>
-            <div id="ingredientsPanel" class="flex grow"></div>
-        </aside>
+        <main id="app" class="container flex grow space-x-4 mt-4"></main>
     </body>
 </html>

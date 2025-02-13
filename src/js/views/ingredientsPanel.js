@@ -14,7 +14,7 @@ export function renderIngredientPanel() {
                 verslepen.
             </p>
             <div id="ingredients">
-                <!-- Ingredients will be loaded here dynamically -->
+                <p class="text-center text-gray-600 italic py-4">Er zijn nog geen ingrediënten</p>
             </div>
         </div>
     `;
