@@ -10,9 +10,6 @@ import { renderColorTestPanel } from "./views/color-test/colorTest.js";
 //** VARIABLES **/
 let colorFormat = "hex"; // hex | rgb | hsl
 
-//** SERVICES **/
-// const ingredientService = new IngredientService();
-
 //** RENDER APP **/
 const app = document.getElementById("app");
 
