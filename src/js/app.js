@@ -39,13 +39,30 @@ app.appendChild(rightColumn);
 
 //** NAVIGATION **/
 const navItems = [
-    { btnId: "navHome", panel: renderHomePanel },
-    { btnId: "navMixHall1", panel: renderMixingHallOnePanel },
-    { btnId: "navMixHall2", panel: renderMixingHallTwoPanel },
-    { btnId: "navColorTest", panel: renderColorTestPanel },
+    {
+        btnId: "navHome",
+        panel: renderHomePanel,
+        pageTitle: "Home",
+    },
+    {
+        btnId: "navMixHall1",
+        panel: renderMixingHallOnePanel,
+        pageTitle: "Menghal 1",
+    },
+    {
+        btnId: "navMixHall2",
+        panel: renderMixingHallTwoPanel,
+        pageTitle: "Menghal 2",
+    },
+    {
+        btnId: "navColorTest",
+        panel: renderColorTestPanel,
+        pageTitle: "Kleuren test",
+    },
 ];
 
-function updatePage(clickedBtnId, panel) {
+const pageTitleElement = document.getElementById("pageTitle");
+function updatePage(clickedBtnId, panel, pageTitle) {
     // clear and render new panel
     page.innerHTML = "";
     page.appendChild(panel().content.cloneNode(true));
@@ -57,19 +74,22 @@ function updatePage(clickedBtnId, panel) {
     if (clickedBtnId) {
         document.getElementById(clickedBtnId).className = "btn-light";
     }
+
+    // update page title
+    pageTitleElement.innerHTML = pageTitle ?? "";
 }
 
-navItems.forEach(({ btnId, panel }) => {
+navItems.forEach(({ btnId, panel, pageTitle }) => {
     document
         .getElementById(btnId)
-        .addEventListener("click", () => updatePage(btnId, panel));
+        .addEventListener("click", () => updatePage(btnId, panel, pageTitle));
 });
 
 // Navigation in subpanels
 document
     .getElementById("createIngredientBtn")
     ?.addEventListener("click", () => {
-        updatePage(null, renderIngredientForm);
+        updatePage(null, renderIngredientForm, "Ingrediënt aanmaken");
     });
 
 //** EVENT LISTENERS **/
