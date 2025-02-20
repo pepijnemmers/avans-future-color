@@ -6,8 +6,26 @@ const storageService = new StorageService();
 const storageKey = "ingredients";
 
 export class IngredientService {
+    static instance;
+
     constructor() {
+        if (IngredientService.instance) {
+            return IngredientService.instance;
+        }
+
         this.ingredients = storageService.loadFromLocalStorage(storageKey);
+        IngredientService.instance = this;
+    }
+
+    /**
+     * Get the singleton instance of the IngredientService
+     * @returns {IngredientService}
+     */
+    static getInstance() {
+        if (!IngredientService.instance) {
+            IngredientService.instance = new IngredientService();
+        }
+        return IngredientService.instance;
     }
 
     /**

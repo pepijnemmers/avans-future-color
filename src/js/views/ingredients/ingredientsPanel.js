@@ -1,4 +1,3 @@
-import { Structure } from "../../enums/Structure.js";
 import { IngredientService } from "../../services/IngredientService.js";
 
 /**
@@ -24,7 +23,7 @@ export function renderIngredientPanel() {
     return template;
 }
 
-const service = new IngredientService();
+const service = IngredientService.getInstance();
 
 function renderIngredients() {
     const ingredients = service.getAllIngredients();

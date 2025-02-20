@@ -10,6 +10,10 @@ h3 {
     @apply text-xl font-bold text-black;
 }
 
+p {
+    @apply mb-2;
+}
+
 body {
     @apply font-sans text-base text-gray-800;
 }
@@ -25,7 +29,13 @@ body {
     @apply bg-transparent text-gray-900 hover:bg-gray-100 !shadow-none;
 }
 .btn-dark {
-    @apply bg-gray-900 text-white hover:bg-gray-800;
+    @apply bg-gray-800 text-white hover:bg-gray-700;
+}
+.btn-primary {
+    @apply bg-emerald-700 text-white hover:bg-emerald-800;
+}
+.btn-secondary {
+    @apply bg-gray-300 text-gray-900 hover:bg-gray-400;
 }
 
 [class^="btn-"] {
@@ -37,11 +47,26 @@ body {
 }
 
 label {
-    @apply text-sm font-semibold text-gray-800;
+    @apply text-sm font-semibold text-gray-800 pb-2;
 }
 
 input,
 textarea,
 select {
     @apply px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm;
+}
+
+input[type="color"] {
+    @apply min-h-[2.5rem] px-2 py-1;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    @apply rounded-sm border-0;
+}
+
+.form-group {
+    @apply mb-4;
+}
+.form-group > * {
+    @apply block w-full;
 }
