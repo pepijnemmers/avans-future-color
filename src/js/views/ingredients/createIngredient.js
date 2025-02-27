@@ -34,7 +34,6 @@ export function renderIngredientForm() {
             </div>
 
             <div class="text-end">
-                <button type="reset" class="btn-secondary">Annuleren</button>
                 <button type="submit" class="btn-primary">Opslaan</button>
             </div>
         </form>

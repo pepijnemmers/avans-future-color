@@ -70,3 +70,23 @@ input[type="color"]::-webkit-color-swatch {
 .form-group > * {
     @apply block w-full;
 }
+
+.ingredient * {
+    @apply transition-opacity;
+}
+.ingredient svg {
+    @apply drop-shadow-md transition-all cursor-grab;
+}
+
+.ingredient.dragging svg {
+    @apply drop-shadow-xl rotate-6 cursor-grabbing;
+}
+.ingredient.dragging h3,
+.ingredient.dragging p,
+.ingredient.dragging form {
+    @apply opacity-15;
+}
+
+.paint-bucket.dropzone {
+    @apply outline-2 outline-dashed outline-gray-300 rounded-md;
+}

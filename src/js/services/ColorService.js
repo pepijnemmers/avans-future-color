@@ -1,7 +1,7 @@
 import { StorageService } from "../services/LocalStorageService.js";
 
 const storageService = new StorageService();
-const storageKey = "ingredients";
+const storageKey = "colorFormat";
 
 export class ColorService {
     static instance;
@@ -29,7 +29,7 @@ export class ColorService {
      * @returns {string} color format
      */
     getColorFormat() {
-        return storageService.loadFromLocalStorage("colorFormat");
+        return storageService.loadFromLocalStorage(storageKey);
     }
 
     /**

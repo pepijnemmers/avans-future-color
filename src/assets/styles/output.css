@@ -545,6 +545,12 @@
       max-width: 96rem;
     }
   }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
+  .mt-3 {
+    margin-top: calc(var(--spacing) * 3);
+  }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
@@ -554,8 +560,14 @@
   .\!mb-0 {
     margin-bottom: calc(var(--spacing) * 0) !important;
   }
+  .mb-0 {
+    margin-bottom: calc(var(--spacing) * 0);
+  }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
+  }
+  .mb-4 {
+    margin-bottom: calc(var(--spacing) * 4);
   }
   .block {
     display: block;
@@ -587,6 +599,9 @@
   .min-w-\[50\%\] {
     min-width: 50%;
   }
+  .flex-1 {
+    flex: 1;
+  }
   .flex-grow {
     flex-grow: 1;
   }
@@ -617,9 +632,6 @@
   .\!cursor-pointer {
     cursor: pointer !important;
   }
-  .cursor-pointer {
-    cursor: pointer;
-  }
   .resize {
     resize: both;
   }
@@ -628,6 +640,9 @@
   }
   .flex-row {
     flex-direction: row;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
   }
   .place-items-center {
     place-items: center;
@@ -640,6 +655,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
@@ -684,6 +702,12 @@
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
+  .px-4 {
+    padding-inline: calc(var(--spacing) * 4);
+  }
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
+  }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
@@ -696,6 +720,10 @@
   .text-sm {
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
+  }
+  .font-medium {
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
   }
   .whitespace-nowrap {
     white-space: nowrap;
@@ -715,6 +743,10 @@
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
+  }
+  .drop-shadow {
+    --tw-drop-shadow: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow( 0 1px 1px rgb(0 0 0 / 0.06));
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -892,6 +924,36 @@ input[type="color"]::-webkit-color-swatch {
   display: block;
   width: 100%;
 }
+.ingredient * {
+  transition-property: opacity;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.ingredient svg {
+  cursor: grab;
+  --tw-drop-shadow: drop-shadow(var(--drop-shadow-md));
+  filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  transition-property: all;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.ingredient.dragging svg {
+  rotate: 6deg;
+  cursor: grabbing;
+  --tw-drop-shadow: drop-shadow(var(--drop-shadow-xl));
+  filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+}
+.ingredient.dragging h3, .ingredient.dragging p, .ingredient.dragging form {
+  opacity: 15%;
+}
+.paint-bucket.dropzone {
+  border-radius: var(--radius-md);
+  outline-style: var(--tw-outline-style);
+  outline-width: 2px;
+  outline-color: var(--color-gray-300);
+  --tw-outline-style: dashed;
+  outline-style: dashed;
+}
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -958,6 +1020,10 @@ input[type="color"]::-webkit-color-swatch {
   inherits: false;
   initial-value: solid;
 }
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-outline-style {
   syntax: "*";
   inherits: false;
@@ -996,10 +1062,6 @@ input[type="color"]::-webkit-color-swatch {
   inherits: false;
 }
 @property --tw-sepia {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-font-weight {
   syntax: "*";
   inherits: false;
 }

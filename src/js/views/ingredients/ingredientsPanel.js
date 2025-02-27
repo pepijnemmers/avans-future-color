@@ -44,6 +44,7 @@ function renderIngredients() {
 function renderIngredient(ingredient) {
     const ingredientElement = document.createElement("div");
     ingredientElement.classList.add("ingredient");
+    ingredientElement.dataset.id = ingredient.id;
 
     const icons = {
         glad: gladIcon,
@@ -59,18 +60,18 @@ function renderIngredient(ingredient) {
     ingredientElement.innerHTML = `
         <div class="card flex justify-between items-center">
             <div class="flex gap-4">
-                ${image ?? ""}
+                <div draggable="true">${image ?? ""}</div>
                 <div>
                     <h3>
                         ${color} • ${ingredient.structure}
                     </h3>
                     <p class="text-sm !mb-0">
                        <span class="text-gray-500">Mengtijd:</span> 
-                       ${ingredient.mixTime}ms
+                       ${ingredient.mixTime} ms
                     </p>
                     <p class="text-sm !mb-0">
                        <span class="text-gray-500">Mengsnelheid:</span> 
-                       ${ingredient.mixSpeed}rpm
+                       ${ingredient.mixSpeed} rpm
                     </p>
                 </div>
             </div>

@@ -81,4 +81,15 @@ export class IngredientService {
         );
         return this.ingredients;
     }
+
+    /**
+     * Get an ingredient by id
+     * @param {string} id
+     * @returns {Ingredient} ingredient or null
+     */
+    getIngredientById(id) {
+        return this.getAllIngredients().find(
+            (ingredient) => ingredient.id === id
+        );
+    }
 }
