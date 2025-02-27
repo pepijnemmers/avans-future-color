@@ -66,44 +66,15 @@ app.appendChild(leftColumn);
 app.appendChild(rightColumn);
 
 //** NAVIGATION **/
-function refreshApp(page) {
-    let ni = null; // ! changed 
-
-    switch (page) {
-        case "home":
-            ni = navItems.find((item) => item.pageTitle === "Home");
-            updatePage(ni.btnId, ni.panel, ni.pageTitle);
-            break;
-        case "mixHall1":
-            ni = navItems.find((item) => item.pageTitle === "Menghal 1");
-            updatePage(ni.btnId, ni.panel, ni.pageTitle);
-            break;
-        case "mixHall2":
-            ni = navItems.find((item) => item.pageTitle === "Menghal 2");
-            updatePage(ni.btnId, ni.panel, ni.pageTitle);
-            break;
-        case "colorTest":
-            ni = navItems.find((item) => item.pageTitle === "Kleuren test");
-            updatePage(ni.btnId, ni.panel, ni.pageTitle);
-            break;
-        default:
-            break;
+function refreshApp(pageName) {
+    const ni = navItems.find(
+        (item) => item.pageTitle.toLowerCase() === pageName.toLowerCase()
+    );
+    if (ni) {
+        updatePage(ni.btnId, ni.panel, ni.pageTitle);
+    } else {
+        console.error("Page not found");
     }
-
-    // clear columns and app
-    leftColumn.innerHTML = "";
-    rightColumn.innerHTML = "";
-
-    // fill columns
-    leftColumn.appendChild(page);
-    leftColumn.appendChild(renderBucketPanel().content.cloneNode(true));
-
-    rightColumn.appendChild(renderWeatherPanel().content.cloneNode(true));
-    rightColumn.appendChild(renderIngredientPanel().content.cloneNode(true));
-
-    // fill app
-    app.appendChild(leftColumn);
-    app.appendChild(rightColumn);
 }
 
 function updatePage(clickedBtnId, panel, pageTitle) {
@@ -122,10 +93,26 @@ function updatePage(clickedBtnId, panel, pageTitle) {
     // update page title
     pageTitleElement.innerHTML = pageTitle ?? "";
 
-    // ! change
+    // refresh columns
+    refreshColumns();
 }
 
-// ! added method
+function refreshColumns() {
+    // clear columns and app
+    leftColumn.innerHTML = "";
+    rightColumn.innerHTML = "";
+
+    // fill columns
+    leftColumn.appendChild(page);
+    leftColumn.appendChild(renderBucketPanel().content.cloneNode(true));
+
+    rightColumn.appendChild(renderWeatherPanel().content.cloneNode(true));
+    rightColumn.appendChild(renderIngredientPanel().content.cloneNode(true));
+
+    // fill app
+    app.appendChild(leftColumn);
+    app.appendChild(rightColumn);
+}
 
 navItems.forEach(({ btnId, panel, pageTitle }) => {
     document
@@ -160,6 +147,9 @@ document.addEventListener("submit", (e) => {
         case "createIngredient":
             addIngredient(formData);
             break;
+        case "deleteIngredient":
+            deleteIngredient(formData);
+            break;
         default:
             console.error("Form not found");
             break;
@@ -174,5 +164,9 @@ function addIngredient(formData) {
         formData.get("mixSpeed"),
         formData.get("structure")
     );
+    refreshApp("home");
+}
+function deleteIngredient(formData) {
+    ingredientService.removeIngredient(formData.get("id"));
     refreshApp("home");
 }

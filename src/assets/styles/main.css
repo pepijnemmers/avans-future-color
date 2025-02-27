@@ -43,7 +43,7 @@ body {
 }
 
 .card {
-    @apply bg-white shadow-sm rounded-md py-4 px-6 border border-gray-200;
+    @apply bg-white shadow-sm rounded-md py-4 px-6 mb-4 border border-gray-200;
 }
 
 label {
