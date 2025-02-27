@@ -168,10 +168,10 @@ navItems.forEach(({ btnId, panel, pageTitle }) => {
         .addEventListener("click", () => updatePage(btnId, panel, pageTitle));
 });
 
-//** EVENT LISTENERS **/
-// Color format
+//** COLOR FORMAT **/
 const colorFormat = document.getElementById("colorFormat");
-colorFormat.value = storageService.loadFromLocalStorage("colorFormat") || "hex";
+const colorFormatFromStorage = storageService.loadFromLocalStorage("colorFormat");
+colorFormat.value = /^[a-zA-Z]{3}$/.test(colorFormatFromStorage) ? colorFormatFromStorage : "hex";
 storageService.saveToLocalStorage("colorFormat", colorFormat.value);
 
 colorFormat.addEventListener("change", (e) => {
