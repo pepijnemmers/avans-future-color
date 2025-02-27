@@ -48,19 +48,18 @@ function renderIngredient(ingredient) {
     const icons = {
         glad: gladIcon,
         korrel: korrelIcon,
-        "grove-korrel": groveKorrelIcon,
+        "grove korrel": groveKorrelIcon,
         slijmerig: slijmerigIcon,
     };
     const image =
         icons[ingredient.structure.toLowerCase()]?.(ingredient.hexColor) ||
         null;
-
     const color = colorService.colorToSelectedFormat(ingredient.hexColor);
 
     ingredientElement.innerHTML = `
         <div class="card flex justify-between items-center">
             <div class="flex gap-4">
-                ${image}
+                ${image ?? ""}
                 <div>
                     <h3>
                         ${color} • ${ingredient.structure}
