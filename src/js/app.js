@@ -6,9 +6,37 @@ import { renderHomePanel } from "./views/homePanel.js";
 import { renderMixingHallOnePanel } from "./views/mixing-halls/mixingHallOne.js";
 import { renderMixingHallTwoPanel } from "./views/mixing-halls/mixingHallTwo.js";
 import { renderColorTestPanel } from "./views/color-test/colorTest.js";
+import { IngredientService } from "./services/IngredientService.js";
 
 //** VARIABLES **/
 let colorFormat = "hex"; // hex | rgb | hsl
+
+const navItems = [
+    {
+        btnId: "navHome",
+        panel: renderHomePanel,
+        pageTitle: "Home",
+    },
+    {
+        btnId: "navMixHall1",
+        panel: renderMixingHallOnePanel,
+        pageTitle: "Menghal 1",
+    },
+    {
+        btnId: "navMixHall2",
+        panel: renderMixingHallTwoPanel,
+        pageTitle: "Menghal 2",
+    },
+    {
+        btnId: "navColorTest",
+        panel: renderColorTestPanel,
+        pageTitle: "Kleuren test",
+    },
+];
+const pageTitleElement = document.getElementById("pageTitle");
+
+//** SERVICES **/
+const ingredientService = IngredientService.getInstance();
 
 //** RENDER APP **/
 const app = document.getElementById("app");
@@ -38,30 +66,46 @@ app.appendChild(leftColumn);
 app.appendChild(rightColumn);
 
 //** NAVIGATION **/
-const navItems = [
-    {
-        btnId: "navHome",
-        panel: renderHomePanel,
-        pageTitle: "Home",
-    },
-    {
-        btnId: "navMixHall1",
-        panel: renderMixingHallOnePanel,
-        pageTitle: "Menghal 1",
-    },
-    {
-        btnId: "navMixHall2",
-        panel: renderMixingHallTwoPanel,
-        pageTitle: "Menghal 2",
-    },
-    {
-        btnId: "navColorTest",
-        panel: renderColorTestPanel,
-        pageTitle: "Kleuren test",
-    },
-];
+function refreshApp(page) {
+    let ni = null; // ! changed 
 
-const pageTitleElement = document.getElementById("pageTitle");
+    switch (page) {
+        case "home":
+            ni = navItems.find((item) => item.pageTitle === "Home");
+            updatePage(ni.btnId, ni.panel, ni.pageTitle);
+            break;
+        case "mixHall1":
+            ni = navItems.find((item) => item.pageTitle === "Menghal 1");
+            updatePage(ni.btnId, ni.panel, ni.pageTitle);
+            break;
+        case "mixHall2":
+            ni = navItems.find((item) => item.pageTitle === "Menghal 2");
+            updatePage(ni.btnId, ni.panel, ni.pageTitle);
+            break;
+        case "colorTest":
+            ni = navItems.find((item) => item.pageTitle === "Kleuren test");
+            updatePage(ni.btnId, ni.panel, ni.pageTitle);
+            break;
+        default:
+            break;
+    }
+
+    // clear columns and app
+    leftColumn.innerHTML = "";
+    rightColumn.innerHTML = "";
+
+    // fill columns
+    leftColumn.appendChild(page);
+    leftColumn.appendChild(renderBucketPanel().content.cloneNode(true));
+
+    rightColumn.appendChild(renderWeatherPanel().content.cloneNode(true));
+    rightColumn.appendChild(renderIngredientPanel().content.cloneNode(true));
+
+    // fill app
+    app.appendChild(leftColumn);
+    app.appendChild(rightColumn);
+}
+
 function updatePage(clickedBtnId, panel, pageTitle) {
     // clear and render new panel
     page.innerHTML = "";
@@ -77,7 +121,11 @@ function updatePage(clickedBtnId, panel, pageTitle) {
 
     // update page title
     pageTitleElement.innerHTML = pageTitle ?? "";
+
+    // ! change
 }
+
+// ! added method
 
 navItems.forEach(({ btnId, panel, pageTitle }) => {
     document
@@ -93,6 +141,38 @@ document
     });
 
 //** EVENT LISTENERS **/
+// Color format
 document.getElementById("colorFormat").addEventListener("change", (e) => {
     colorFormat = e.target.value;
 });
+
+//** FORM SUBMISSIONS **/
+document.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!e.target || !e.target.dataset.action) {
+        console.error("Form or action not found");
+        return;
+    }
+
+    const formData = new FormData(e.target);
+
+    switch (e.target.dataset.action) {
+        case "createIngredient":
+            addIngredient(formData);
+            break;
+        default:
+            console.error("Form not found");
+            break;
+    }
+});
+
+// Ingredients
+function addIngredient(formData) {
+    ingredientService.addIngredient(
+        formData.get("hexColor"),
+        formData.get("mixTime"),
+        formData.get("mixSpeed"),
+        formData.get("structure")
+    );
+    refreshApp("home");
+}

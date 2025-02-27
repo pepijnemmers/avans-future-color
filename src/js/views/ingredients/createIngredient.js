@@ -7,7 +7,7 @@ import { IngredientService } from "../../services/IngredientService.js";
 export function renderIngredientForm() {
     const template = document.createElement("template");
     template.innerHTML = `        
-        <form onsubmit="addIngredient(event)" class="min-w-[50%]">
+        <form data-action="createIngredient" class="min-w-[50%]">
             <div class="form-group">
                 <label for="hexColor">Kleur</label>
                 <input type="color" id="hexColor" name="hexColor" value="#007a55" required />
@@ -41,12 +41,4 @@ export function renderIngredientForm() {
         </form>
     `;
     return template;
-}
-
-const service = IngredientService.getInstance();
-
-function addIngredient(event) {
-    event.preventDefault;
-    // todo: add ingredient
-    console.log("add ingredient", event);
 }
