@@ -1,5 +1,4 @@
 import { Structure } from "../../enums/Structure.js";
-import { IngredientService } from "../../services/IngredientService.js";
 
 /**
  * @returns {template} The template with the form to create an ingredient

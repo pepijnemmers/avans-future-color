@@ -1,4 +1,5 @@
 import { IngredientService } from "../../services/IngredientService.js";
+import { ColorService } from "../../services/ColorService.js";
 
 /**
  * @returns {template} The template with the ingredient panel
@@ -23,8 +24,11 @@ export function renderIngredientPanel() {
     return template;
 }
 
+// services
 const service = IngredientService.getInstance();
+const colorService = ColorService.getInstance();
 
+// render all ingredients
 function renderIngredients() {
     const ingredients = service.getAllIngredients();
     if (ingredients.length === 0) {
@@ -36,6 +40,7 @@ function renderIngredients() {
         .join("");
 }
 
+// render a single ingredient
 function renderIngredient(ingredient) {
     const ingredientElement = document.createElement("div");
     ingredientElement.classList.add("ingredient");
@@ -50,15 +55,15 @@ function renderIngredient(ingredient) {
         icons[ingredient.structure.toLowerCase()]?.(ingredient.hexColor) ||
         null;
 
+    const color = colorService.colorToSelectedFormat(ingredient.hexColor);
+
     ingredientElement.innerHTML = `
         <div class="card flex justify-between items-center">
             <div class="flex gap-4">
                 ${image}
                 <div>
                     <h3>
-                        ${
-                            ingredient.hexColor /* // TODO: set to colortype as set in dropdown */
-                        } • ${ingredient.structure}
+                        ${color} • ${ingredient.structure}
                     </h3>
                     <p class="text-sm !mb-0">
                        <span class="text-gray-500">Mengtijd:</span> 

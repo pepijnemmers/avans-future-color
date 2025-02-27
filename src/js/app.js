@@ -7,10 +7,9 @@ import { renderMixingHallOnePanel } from "./views/mixing-halls/mixingHallOne.js"
 import { renderMixingHallTwoPanel } from "./views/mixing-halls/mixingHallTwo.js";
 import { renderColorTestPanel } from "./views/color-test/colorTest.js";
 import { IngredientService } from "./services/IngredientService.js";
+import { StorageService } from "./services/LocalStorageService.js";
 
 //** VARIABLES **/
-let colorFormat = "hex"; // hex | rgb | hsl
-
 const navItems = [
     {
         btnId: "navHome",
@@ -36,6 +35,7 @@ const navItems = [
 const pageTitleElement = document.getElementById("pageTitle");
 
 //** SERVICES **/
+const storageService = new StorageService();
 const ingredientService = IngredientService.getInstance();
 
 //** RENDER APP **/
@@ -129,8 +129,13 @@ document
 
 //** EVENT LISTENERS **/
 // Color format
-document.getElementById("colorFormat").addEventListener("change", (e) => {
-    colorFormat = e.target.value;
+const colorFormat = document.getElementById("colorFormat");
+colorFormat.value = storageService.loadFromLocalStorage("colorFormat") || "hex";
+storageService.saveToLocalStorage("colorFormat", colorFormat.value);
+
+colorFormat.addEventListener("change", (e) => {
+    storageService.saveToLocalStorage("colorFormat", e.target.value);
+    refreshApp("home");
 });
 
 //** FORM SUBMISSIONS **/
