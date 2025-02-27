@@ -545,11 +545,11 @@
       max-width: 96rem;
     }
   }
+  .mx-auto {
+    margin-inline: auto;
+  }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
-  }
-  .mt-3 {
-    margin-top: calc(var(--spacing) * 3);
   }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
@@ -560,14 +560,8 @@
   .\!mb-0 {
     margin-bottom: calc(var(--spacing) * 0) !important;
   }
-  .mb-0 {
-    margin-bottom: calc(var(--spacing) * 0);
-  }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
-  }
-  .mb-4 {
-    margin-bottom: calc(var(--spacing) * 4);
   }
   .block {
     display: block;
@@ -598,9 +592,6 @@
   }
   .min-w-\[50\%\] {
     min-width: 50%;
-  }
-  .flex-1 {
-    flex: 1;
   }
   .flex-grow {
     flex-grow: 1;
@@ -710,6 +701,12 @@
   }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
+  }
+  .py-6 {
+    padding-block: calc(var(--spacing) * 6);
+  }
+  .py-8 {
+    padding-block: calc(var(--spacing) * 8);
   }
   .text-center {
     text-align: center;
@@ -946,13 +943,24 @@ input[type="color"]::-webkit-color-swatch {
 .ingredient.dragging h3, .ingredient.dragging p, .ingredient.dragging form {
   opacity: 15%;
 }
-.paint-bucket.dropzone {
+.paint-bucket {
   border-radius: var(--radius-md);
   outline-style: var(--tw-outline-style);
-  outline-width: 2px;
+  outline-width: 0px;
   outline-color: var(--color-gray-300);
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
   --tw-outline-style: dashed;
   outline-style: dashed;
+}
+.paint-bucket.dropzone {
+  outline-style: var(--tw-outline-style);
+  outline-width: 2px;
+}
+.paint-bucket.dropzone.dragover {
+  background-color: var(--color-gray-100);
+  outline-color: var(--color-gray-500);
 }
 @keyframes spin {
   to {

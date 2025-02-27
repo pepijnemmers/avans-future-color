@@ -141,7 +141,11 @@ function refreshColumns() {
     function addBucketListeners(bucket) {
         bucket.addEventListener("dragover", (e) => {
             e.preventDefault();
+            bucket.classList.add("dragover");
         });
+        bucket.addEventListener("dragleave", () =>
+            bucket.classList.remove("dragover")
+        );
 
         bucket.addEventListener("drop", (e) => {
             e.preventDefault();

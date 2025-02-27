@@ -33,7 +33,7 @@ const colorService = ColorService.getInstance();
 function renderPaintBuckets() {
     const paintBuckets = service.getAllPaintBuckets();
     if (paintBuckets.length === 0) {
-        return `<p class="text-center text-gray-600 italic py-4">Er zijn nog geen verfpotten</p>`;
+        return `<p class="text-center text-gray-600 italic py-8 mx-auto">Er zijn nog geen verfpotten</p>`;
     }
 
     return paintBuckets
