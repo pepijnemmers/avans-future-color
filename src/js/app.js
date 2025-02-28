@@ -9,6 +9,7 @@ import { renderColorTestPanel } from "./views/color-test/colorTest.js";
 import { IngredientService } from "./services/IngredientService.js";
 import { StorageService } from "./services/LocalStorageService.js";
 import { PaintBucketService } from "./services/PaintBucketService.js";
+import { renderMachineForm } from "./views/mixing-halls/createMachine.js";
 
 //** VARIABLES **/
 const navItems = [
@@ -113,14 +114,17 @@ function refreshColumns() {
     // add event listeners
     document
         .getElementById("createIngredientBtn")
-        ?.addEventListener("click", () => {
-            updatePage(null, renderIngredientForm, "Ingrediënt aanmaken");
-        });
+        ?.addEventListener("click", () =>
+            updatePage(null, renderIngredientForm, "Ingrediënt aanmaken")
+        );
     document
         .getElementById("createBucketBtn")
-        ?.addEventListener("click", () => {
-            addPaintBucket();
-        });
+        ?.addEventListener("click", () => addPaintBucket());
+    document
+        .getElementById("createMachineBtn")
+        ?.addEventListener("click", () =>
+            updatePage(null, renderMachineForm, "Mengmachine aanmaken")
+        );
 
     // add drag and drop
     const draggables = document.querySelectorAll(".ingredient");
@@ -170,8 +174,11 @@ navItems.forEach(({ btnId, panel, pageTitle }) => {
 
 //** COLOR FORMAT **/
 const colorFormat = document.getElementById("colorFormat");
-const colorFormatFromStorage = storageService.loadFromLocalStorage("colorFormat");
-colorFormat.value = /^[a-zA-Z]{3}$/.test(colorFormatFromStorage) ? colorFormatFromStorage : "hex";
+const colorFormatFromStorage =
+    storageService.loadFromLocalStorage("colorFormat");
+colorFormat.value = /^[a-zA-Z]{3}$/.test(colorFormatFromStorage)
+    ? colorFormatFromStorage
+    : "hex";
 storageService.saveToLocalStorage("colorFormat", colorFormat.value);
 
 colorFormat.addEventListener("change", (e) => {
@@ -241,4 +248,9 @@ function addIngredientToBucket(bucketId, ingredientId) {
 
     paintBucketService.addIngredientToPaintBucket(bucket, ingredient);
     refreshApp();
+}
+
+// Machines
+function addMachine() {
+    console.log("add machine");
 }

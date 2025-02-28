@@ -7,6 +7,8 @@ export function renderIngredientForm() {
     const template = document.createElement("template");
     template.innerHTML = `        
         <form data-action="createIngredient" class="min-w-[50%]">
+            <h2>Nieuw ingrediënt</h2>
+            <p>Vul de velden en klik op opslaan. Het ingrediënt komt in de lijst te staan.</p>
             <div class="form-group">
                 <label for="hexColor">Kleur</label>
                 <input type="color" id="hexColor" name="hexColor" value="#007a55" required />
