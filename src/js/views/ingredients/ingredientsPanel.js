@@ -45,6 +45,7 @@ function renderIngredient(ingredient) {
     const ingredientElement = document.createElement("div");
     ingredientElement.classList.add("ingredient");
     ingredientElement.dataset.id = ingredient.id;
+    ingredientElement.dataset.draggableType = "ingredient";
 
     const icons = {
         glad: gladIcon,

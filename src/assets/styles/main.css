@@ -64,6 +64,10 @@ input[type="color"]::-webkit-color-swatch {
     @apply rounded-sm border-0;
 }
 
+*[draggable="true"] {
+    @apply cursor-grab;
+}
+
 .form-group {
     @apply mb-4;
 }
@@ -75,7 +79,7 @@ input[type="color"]::-webkit-color-swatch {
     @apply transition-opacity;
 }
 .ingredient svg {
-    @apply drop-shadow-md transition-all cursor-grab;
+    @apply drop-shadow-md transition-all;
 }
 
 .ingredient.dragging svg {
@@ -96,6 +100,6 @@ input[type="color"]::-webkit-color-swatch {
     @apply outline-2;
 }
 .paint-bucket.dropzone.dragover,
-.mix-machine .dropzone.dragover {
+.mix-machine.dragover .dropzone {
     @apply bg-gray-100 outline-gray-500;
 }

@@ -45,7 +45,11 @@ function renderPaintBuckets() {
 function renderBucket(bucket) {
     const bucketElement = document.createElement("div");
     bucketElement.classList.add("paint-bucket", "py-2", "px-4", "grow");
+    if (bucket.ingredients.length > 1) {
+        bucketElement.classList.add("mixable");
+    }
     bucketElement.dataset.id = bucket.id;
+    bucketElement.dataset.draggableType = "bucket";
 
     let color = "#787878";
     if (bucket.ingredients.length == 1) {
@@ -59,12 +63,17 @@ function renderBucket(bucket) {
             ? "Leeg"
             : bucket.ingredients.length == 1
             ? colorService.colorToSelectedFormat(bucket.ingredients[0].hexColor)
-            : "Mix";
+            : `Mix (${bucket.ingredients.length})`;
 
     bucketElement.innerHTML = `
         <div class="flex flex-col items-center">
-            ${color ? bucketIcon(color) : bucketIconGradient()}
-            <p class="font-medium !mb-0 mt-2">${label}</p>
+            <div 
+                class="flex flex-col items-center"
+                draggable="${bucket.ingredients.length > 1 ? "true" : "false"}"
+            >
+                ${color ? bucketIcon(color) : bucketIconGradient()}
+                <p class="text-center font-medium !mb-0 mt-2">${label}</p>
+            </div>
             <p class="text-sm mb-2 text-gray-500" title="Mengsnelheid">
                 ${bucket.mixSpeed > 0 ? bucket.mixSpeed : "-"} rpm
             </p>

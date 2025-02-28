@@ -10,6 +10,7 @@ export function renderMachine(machine, status) {
 
     const machineElement = document.createElement("div");
     machineElement.classList.add("mix-machine");
+    machineElement.dataset.id = machine.id;
 
     machineElement.innerHTML = `
         <div class="card">

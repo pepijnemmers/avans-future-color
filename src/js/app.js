@@ -128,44 +128,7 @@ function refreshColumns() {
             updatePage(null, renderMachineForm, "Mengmachine aanmaken")
         );
 
-    // add drag and drop
-    const draggables = document.querySelectorAll(".ingredient");
-    const buckets = document.querySelectorAll(".paint-bucket");
-
-    function addDragAndDropListeners(draggable, buckets) {
-        draggable.addEventListener("dragstart", () => {
-            draggable.classList.add("dragging");
-            buckets.forEach((bucket) => bucket.classList.add("dropzone"));
-        });
-
-        draggable.addEventListener("dragend", () => {
-            draggable.classList.remove("dragging");
-            buckets.forEach((bucket) => bucket.classList.remove("dropzone"));
-        });
-    }
-
-    function addBucketListeners(bucket) {
-        bucket.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            bucket.classList.add("dragover");
-        });
-        bucket.addEventListener("dragleave", () =>
-            bucket.classList.remove("dragover")
-        );
-
-        bucket.addEventListener("drop", (e) => {
-            e.preventDefault();
-            const draggable = document.querySelector(".dragging");
-            const ingredientId = draggable.dataset.id;
-            const bucketId = bucket.dataset.id;
-            addIngredientToBucket(bucketId, ingredientId);
-        });
-    }
-
-    draggables.forEach((draggable) =>
-        addDragAndDropListeners(draggable, buckets)
-    );
-    buckets.forEach(addBucketListeners);
+    updateDnD();
 }
 
 navItems.forEach(({ btnId, panel, pageTitle }) => {
@@ -269,4 +232,89 @@ function addMachine(formData) {
 function deleteMachine(formData) {
     machineService.removeMachine(formData.get("id"));
     refreshApp();
+}
+function addBucketToMachine(bucketId, machineId) {
+    // TODO: implement
+    console.log("addBucketToMachine", bucketId, machineId);
+}
+
+/** DRAG AND DROP **/
+function updateDnD() {
+    // global function
+    function addDragAndDropListeners(draggable, dropzone) {
+        draggable.addEventListener("dragstart", () => {
+            draggable.classList.add("dragging");
+            dropzone.forEach((dz) => dz.classList.add("dropzone"));
+        });
+
+        draggable.addEventListener("dragend", () => {
+            draggable.classList.remove("dragging");
+            dropzone.forEach((dz) => dz.classList.remove("dropzone"));
+        });
+    }
+
+    // ingredient to bucket drag and drop
+    function addBucketListeners(bucket) {
+        bucket.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            bucket.classList.add("dragover");
+        });
+        bucket.addEventListener("dragleave", () =>
+            bucket.classList.remove("dragover")
+        );
+
+        bucket.addEventListener("drop", (e) => {
+            e.preventDefault();
+
+            const draggable = document.querySelector(".dragging");
+            if (draggable.dataset.draggableType !== "ingredient") {
+                alert("Je kan alleen ingrediënten toevoegen");
+                return;
+            }
+
+            const ingredientId = draggable.dataset.id;
+            const bucketId = bucket.dataset.id;
+            addIngredientToBucket(bucketId, ingredientId);
+        });
+    }
+
+    const ingredients = document.querySelectorAll(".ingredient");
+    const buckets = document.querySelectorAll(".paint-bucket");
+    ingredients.forEach((ingredient) =>
+        addDragAndDropListeners(ingredient, buckets)
+    );
+    buckets.forEach(addBucketListeners);
+
+    // bucket to machine drag and drop
+    function addMachineListeners(machine) {
+        machine.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            machine.classList.add("dragover");
+        });
+        machine.addEventListener("dragleave", () =>
+            machine.classList.remove("dragover")
+        );
+
+        machine.addEventListener("drop", (e) => {
+            e.preventDefault();
+            machine.classList.remove("dragover");
+
+            const draggable = document.querySelector(".dragging");
+            if (draggable.dataset.draggableType !== "bucket") {
+                alert("Je kan alleen verf potten toevoegen");
+                return;
+            }
+
+            const bucketId = draggable.dataset.id;
+            const machineId = machine.dataset.id;
+            addBucketToMachine(bucketId, machineId);
+        });
+    }
+
+    const mixableBuckets = document.querySelectorAll(".paint-bucket.mixable");
+    const machines = document.querySelectorAll(".mix-machine");
+    mixableBuckets.forEach((bucket) =>
+        addDragAndDropListeners(bucket, machines)
+    );
+    machines.forEach(addMachineListeners);
 }
