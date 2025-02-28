@@ -10,6 +10,7 @@ import { IngredientService } from "./services/IngredientService.js";
 import { StorageService } from "./services/LocalStorageService.js";
 import { PaintBucketService } from "./services/PaintBucketService.js";
 import { renderMachineForm } from "./views/mixing-halls/createMachine.js";
+import { MachineService } from "./services/MachineService.js";
 
 //** VARIABLES **/
 const navItems = [
@@ -40,6 +41,7 @@ const pageTitleElement = document.getElementById("pageTitle");
 const storageService = new StorageService();
 const ingredientService = IngredientService.getInstance();
 const paintBucketService = PaintBucketService.getInstance();
+const machineService = MachineService.getInstance();
 
 //** RENDER APP **/
 const app = document.getElementById("app");
@@ -205,6 +207,12 @@ document.addEventListener("submit", (e) => {
         case "deleteBucket":
             deletePaintBucket(formData);
             break;
+        case "createMachine":
+            addMachine(formData);
+            break;
+        case "deleteMachine":
+            deleteMachine(formData);
+            break;
         default:
             console.error("Form not found");
             break;
@@ -251,6 +259,14 @@ function addIngredientToBucket(bucketId, ingredientId) {
 }
 
 // Machines
-function addMachine() {
-    console.log("add machine");
+function addMachine(formData) {
+    machineService.addMachine(
+        formData.get("mixSpeed"),
+        formData.get("mixingHall")
+    );
+    refreshApp(`Menghal ${formData.get("mixingHall")}`);
+}
+function deleteMachine(formData) {
+    machineService.removeMachine(formData.get("id"));
+    refreshApp();
 }

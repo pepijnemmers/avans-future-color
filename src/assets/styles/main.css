@@ -87,16 +87,15 @@ input[type="color"]::-webkit-color-swatch {
     @apply opacity-15;
 }
 
-.paint-bucket {
+.paint-bucket,
+.mix-machine .dropzone {
     @apply outline-0 outline-dashed outline-gray-300 rounded-md transition-colors;
 }
-.paint-bucket.dropzone {
+.paint-bucket.dropzone,
+.mix-machine .dropzone {
     @apply outline-2;
 }
-.paint-bucket.dropzone.dragover {
+.paint-bucket.dropzone.dragover,
+.mix-machine .dropzone.dragover {
     @apply bg-gray-100 outline-gray-500;
-}
-
-.mix-machine {
-    @apply border-2 border-red-500 rounded-md p-4;
 }
