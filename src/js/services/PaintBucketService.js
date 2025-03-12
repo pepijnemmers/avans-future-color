@@ -80,7 +80,7 @@ export class PaintBucketService {
     /**
      * Get a paint bucket by id
      * @param {string} id
-     * @returns {PaintBucket} paint bucket or null
+     * @returns {PaintBucket | null} paint bucket or null
      */
     getPainBucketById(id) {
         return this.getAllPaintBuckets().find((bucket) => bucket.id === id);

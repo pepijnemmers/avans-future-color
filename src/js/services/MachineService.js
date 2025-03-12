@@ -1,8 +1,10 @@
 import { Machine } from "../models/Machine.js";
 import { StorageService } from "./LocalStorageService.js";
+import { PaintBucketService } from "./PaintBucketService.js";
 
 const storageService = new StorageService();
 const storageKey = "machines";
+const paintBucketService = PaintBucketService.getInstance();
 
 export class MachineService {
     static instance;
@@ -34,7 +36,7 @@ export class MachineService {
      * @returns {Machine}
      */
     addMachine(mixSpeed, mixingHall) {
-        const machine = new Machine(null, mixSpeed, mixingHall);
+        const machine = new Machine(null, mixSpeed, mixingHall, null, 0);
 
         this.machines.push(machine);
         storageService.saveToLocalStorage(storageKey, this.machines);
@@ -58,7 +60,14 @@ export class MachineService {
     getAllMachines() {
         const storedMachines = storageService.loadFromLocalStorage(storageKey);
         this.machines = storedMachines.map(
-            (m) => new Machine(m.id, m.mixSpeed, m.mixingHall)
+            (m) =>
+                new Machine(
+                    m.id,
+                    m.mixSpeed,
+                    m.mixingHall,
+                    m.bucket,
+                    m.shakeStartTime
+                )
         );
         return this.machines;
     }
@@ -71,5 +80,40 @@ export class MachineService {
     getAllMachinesByMixingHall(mixingHall) {
         const machines = this.getAllMachines();
         return machines.filter((m) => m.mixingHall == mixingHall);
+    }
+
+    /**
+     * Get a machine by id
+     * @param {string} id
+     * @returns {Machine | null} The machine with the given id or null
+     */
+    getMachineById(id) {
+        return this.getAllMachines().find((m) => m.id === id);
+    }
+
+    /**
+     * Add a paint bucket to a machine
+     * @param {string} bucketId
+     * @param {string} machineId
+     * @returns {boolean} True if the bucket is added to the machine
+     */
+    addBucketToMachine(bucketId, machineId) {
+        const machine = this.getMachineById(machineId);
+        const bucket = paintBucketService.getPainBucketById(bucketId);
+
+        if (
+            !machine ||
+            !bucket ||
+            machine.mixSpeed !== bucket.mixSpeed ||
+            machine.bucket
+        ) {
+            return false;
+        }
+
+        machine.bucket = bucket;
+        machine.shakeStart = Date.now();
+        storageService.saveToLocalStorage(storageKey, this.machines);
+
+        return true;
     }
 }

@@ -374,6 +374,7 @@
     --default-mono-font-variation-settings: var(
       --font-mono--font-variation-settings
     );
+    --animate-paintshake: tilt-n-move-shaking 500ms linear infinite;
   }
 }
 @layer base {
@@ -518,6 +519,9 @@
   }
 }
 @layer utilities {
+  .relative {
+    position: relative;
+  }
   .static {
     position: static;
   }
@@ -575,6 +579,9 @@
   .h-full {
     height: 100%;
   }
+  .min-h-\[112px\] {
+    min-height: 112px;
+  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -589,6 +596,9 @@
   }
   .min-w-\[50\%\] {
     min-width: 50%;
+  }
+  .min-w-\[230px\] {
+    min-width: 230px;
   }
   .grow {
     flex-grow: 1;
@@ -676,6 +686,9 @@
   .border-gray-200 {
     border-color: var(--color-gray-200);
   }
+  .bg-gray-100 {
+    background-color: var(--color-gray-100);
+  }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
   }
@@ -756,6 +769,27 @@
   .\*\*\:\!mb-0 {
     :is(& *) {
       margin-bottom: calc(var(--spacing) * 0) !important;
+    }
+  }
+  .\[\&_svg\]\:h-\[85px\] {
+    & svg {
+      height: 85px;
+    }
+  }
+  .\[\&_svg\]\:w-auto {
+    & svg {
+      width: auto;
+    }
+  }
+  .\[\&_svg\]\:animate-paintshake {
+    & svg {
+      animation: var(--animate-paintshake);
+    }
+  }
+  .\[\&_svg\]\:drop-shadow-lg {
+    & svg {
+      --tw-drop-shadow: drop-shadow(var(--drop-shadow-lg));
+      filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
     }
   }
   .\[\&\:\:-moz-progress-bar\]\:bg-gray-300 {
@@ -1020,6 +1054,23 @@ input[type="color"]::-webkit-color-swatch {
   50% {
     transform: none;
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+@keyframes tilt-n-move-shaking {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(5px, 5px) rotate(15deg);
+  }
+  50% {
+    transform: translate(0, 0) rotate(0eg);
+  }
+  75% {
+    transform: translate(-5px, 5px) rotate(-20deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 @property --tw-space-y-reverse {

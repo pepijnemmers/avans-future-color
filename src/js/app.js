@@ -234,8 +234,12 @@ function deleteMachine(formData) {
     refreshApp();
 }
 function addBucketToMachine(bucketId, machineId) {
-    // TODO: implement
-    console.log("addBucketToMachine", bucketId, machineId);
+    const added = machineService.addBucketToMachine(bucketId, machineId);
+    if (!added)
+        alert(
+            "Deze bucket kan niet worden toegevoegd aan deze machine. Mogelijk is de mix snelheid niet gelijk of wordt de machine al gebruikt."
+        );
+    refreshApp();
 }
 
 /** DRAG AND DROP **/

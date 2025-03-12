@@ -103,3 +103,25 @@ input[type="color"]::-webkit-color-swatch {
 .mix-machine.dragover .dropzone {
     @apply bg-gray-100 outline-gray-500;
 }
+
+@theme {
+    --animate-paintshake: tilt-n-move-shaking 500ms linear infinite;
+
+    @keyframes tilt-n-move-shaking {
+        0% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+            transform: translate(5px, 5px) rotate(15deg);
+        }
+        50% {
+            transform: translate(0, 0) rotate(0eg);
+        }
+        75% {
+            transform: translate(-5px, 5px) rotate(-20deg);
+        }
+        100% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+    }
+}

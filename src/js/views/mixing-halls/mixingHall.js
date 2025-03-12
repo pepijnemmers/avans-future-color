@@ -30,9 +30,5 @@ function renderMachines(mixingHall) {
         return `<p class="text-center text-gray-600 italic py-4 w-full">Er zijn nog geen machines in deze menghal</p>`;
     }
 
-    let status = MachineStatus.EMPTY; // todo: get status from machine
-
-    return machines
-        .map((machine) => renderMachine(machine, status).outerHTML)
-        .join("");
+    return machines.map((machine) => renderMachine(machine).outerHTML).join("");
 }
