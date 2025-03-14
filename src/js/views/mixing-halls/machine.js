@@ -9,21 +9,6 @@ import { bucketIcon } from "../paint-buckets/bucketIcon.js";
  */
 export function renderMachine(machine) {
     const status = machine.bucket ? MachineStatus.MIXING : MachineStatus.EMPTY;
-
-    // TODO: Shake time > status progress bar, when shaking is done show new status and remove bucket from machine and add back to paint bucket list as a new bucket with 1 color that came out of the machine. Write one method for this all
-    let shakeDuration = 0;
-    machine.bucket
-        ? machine.bucket.ingredients.map((ingredient) => {
-              shakeDuration < ingredient.mixTime
-                  ? (shakeDuration = ingredient.mixTime)
-                  : 0;
-          })
-        : 0;
-    let shakeEndTime = machine.shakeStart + shakeDuration * 1000;
-    let shakeTimeLeft = shakeEndTime - Date.now();
-
-    console.log(shakeTimeLeft);
-
     const machineElement = document.createElement("div");
     machineElement.classList.add("mix-machine");
     machineElement.dataset.id = machine.id;
@@ -71,11 +56,7 @@ export function renderMachine(machine) {
                     ${
                         status === MachineStatus.EMPTY
                             ? "<p class='text-emerald-700 font-bold text-xl'>Vrij</p>"
-                            : `<progress
-                                    value="${65}" 
-                                    max="100" 
-                                    class="[&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg   [&::-webkit-progress-bar]:bg-gray-300 [&::-webkit-progress-value]:bg-emerald-700 [&::-moz-progress-bar]:bg-gray-300"
-                                ></progress>`
+                            : "<p class='text-red-700 font-bold text-xl'>Bezig</p>"
                     }
                 </div>
                 <div class="flex justify-between items-center">
@@ -87,3 +68,23 @@ export function renderMachine(machine) {
     `;
     return machineElement;
 }
+
+// function getProgressPercentage(machine) {
+//     let shakeDurationMs = 0;
+//     if (machine.bucket) {
+//         machine.bucket.ingredients.forEach((ingredient) => {
+//             if (shakeDurationMs < ingredient.mixTime) {
+//                 shakeDurationMs = ingredient.mixTime;
+//             }
+//         });
+//     }
+//     const shakeDurationInSecs = Math.round(shakeDurationMs / 1000);
+//     const totalShakingNow = Date.now() - machine.shakeStart;
+//     const shakingInSecs = Math.round(totalShakingNow / 1000);
+
+//     console.log("shakedur", shakeDurationInSecs);
+//     console.log("shakingInSecs", shakingInSecs);
+//     console.log("now-start", Date.now() - machine.shakeStart);
+
+//     return ((Date.now() - machine.shakeStart) / shakeDurationInSecs) * 100;
+// }
