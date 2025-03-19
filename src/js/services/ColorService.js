@@ -25,6 +25,16 @@ export class ColorService {
     }
 
     /**
+     * Mix colors together and return the result
+     * @param {string[]} colors array of colors to mix (hex format)
+     * @returns {string} new color after mixing (hex format)
+     */
+    mixColors(colors) {
+        const color = "#000000";
+        return color;
+    }
+
+    /**
      * Get the selected color format from local storage
      * @returns {string} color format
      */

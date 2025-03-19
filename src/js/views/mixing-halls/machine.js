@@ -1,14 +1,19 @@
 import { Machine } from "../../models/Machine.js";
 import { MachineStatus } from "../../enums/MachineStatus.js";
 import { bucketIcon } from "../paint-buckets/bucketIcon.js";
+import { MachineService } from "../../services/MachineService.js";
 
 /**
  * Render a single machine element
  * @param {Machine} machine
+ * @param {MachineService} machineServ
  * @returns {HTMLElement} The machine element
  */
-export function renderMachine(machine) {
+export function renderMachine(machine, machineServ) {
+    machineService = machineServ;
     const status = machine.bucket ? MachineStatus.MIXING : MachineStatus.EMPTY;
+    checkMachineStatus(machine);
+
     const machineElement = document.createElement("div");
     machineElement.classList.add("mix-machine");
     machineElement.dataset.id = machine.id;
@@ -51,12 +56,12 @@ export function renderMachine(machine) {
             }
             
             <div class="border-t border-gray-200 mt-4 pt-4 **:!mb-0">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center" id="machineStatus">
                     <p class="text-gray-600">Status</p>
                     ${
                         status === MachineStatus.EMPTY
                             ? "<p class='text-emerald-700 font-bold text-xl'>Vrij</p>"
-                            : "<p class='text-red-700 font-bold text-xl'>Bezig</p>"
+                            : "<progress id='machineProgressBar' value='0' max='100' class='w-[50%] h-5 bg-gray-200 rounded-full'></progress>"
                     }
                 </div>
                 <div class="flex justify-between items-center">
@@ -69,22 +74,45 @@ export function renderMachine(machine) {
     return machineElement;
 }
 
-// function getProgressPercentage(machine) {
-//     let shakeDurationMs = 0;
-//     if (machine.bucket) {
-//         machine.bucket.ingredients.forEach((ingredient) => {
-//             if (shakeDurationMs < ingredient.mixTime) {
-//                 shakeDurationMs = ingredient.mixTime;
-//             }
-//         });
-//     }
-//     const shakeDurationInSecs = Math.round(shakeDurationMs / 1000);
-//     const totalShakingNow = Date.now() - machine.shakeStart;
-//     const shakingInSecs = Math.round(totalShakingNow / 1000);
+let machineService = null;
 
-//     console.log("shakedur", shakeDurationInSecs);
-//     console.log("shakingInSecs", shakingInSecs);
-//     console.log("now-start", Date.now() - machine.shakeStart);
+function checkMachineStatus(machine) {
+    if (!machine.bucket) return;
 
-//     return ((Date.now() - machine.shakeStart) / shakeDurationInSecs) * 100;
-// }
+    // shakestart, duration and endtime
+    const shakeStart = machine.shakeStart;
+    let shakeDurationMs = 0;
+    machine.bucket.ingredients.forEach((ingredient) => {
+        const mixTime = parseInt(ingredient.mixTime);
+        if (shakeDurationMs < mixTime) {
+            shakeDurationMs = mixTime;
+        }
+    });
+    const shakeEnd = shakeStart + shakeDurationMs;
+
+    // update progress or save new bucket when done
+    let interval;
+
+    const updateProgress = () => {
+        const progress = ((Date.now() - shakeStart) / shakeDurationMs) * 100;
+        let progressBar = document.getElementById("machineProgressBar");
+        if (progressBar) progressBar.value = progress;
+
+        if (shakeEnd < Date.now()) {
+            if (!machineService) {
+                console.error("MachineService not set");
+                return;
+            }
+
+            machineService.resetMachineAndSaveNewMix(machine, shakeDurationMs);
+            if (interval) {
+                clearInterval(interval);
+            }
+            return;
+        }
+    };
+
+    // Run instantly then every second
+    updateProgress();
+    interval = setInterval(updateProgress, 1000);
+}

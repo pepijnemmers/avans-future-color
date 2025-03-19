@@ -1,10 +1,14 @@
+import { Structure } from "../enums/Structure.js";
+import { Ingredient } from "../models/Ingredient.js";
 import { Machine } from "../models/Machine.js";
+import { ColorService } from "./ColorService.js";
 import { StorageService } from "./LocalStorageService.js";
 import { PaintBucketService } from "./PaintBucketService.js";
 
 const storageService = new StorageService();
 const storageKey = "machines";
 const paintBucketService = PaintBucketService.getInstance();
+const colorService = ColorService.getInstance();
 
 export class MachineService {
     static instance;
@@ -66,7 +70,7 @@ export class MachineService {
                     m.mixSpeed,
                     m.mixingHall,
                     m.bucket,
-                    m.shakeStartTime
+                    m.shakeStart
                 )
         );
         return this.machines;
@@ -115,5 +119,48 @@ export class MachineService {
         storageService.saveToLocalStorage(storageKey, this.machines);
 
         return true;
+    }
+
+    /**
+     * Reset a machine and save the new mix to local storage
+     * @param {Machine} machine
+     * @param {number} shakeDurationMs
+     */
+    resetMachineAndSaveNewMix(machine, shakeDurationMs) {
+        // get new color
+        const colors = machine.bucket.ingredients.map((i) => i.hexColor);
+        const newColor = colorService.mixColors(colors);
+
+        // get most used structure
+        const structureCounts = machine.bucket.ingredients.reduce(
+            (counts, ingredient) => {
+                counts[ingredient.structure] =
+                    (counts[ingredient.structure] || 0) + 1;
+                return counts;
+            },
+            {}
+        );
+        const newStructure = Object.keys(structureCounts).reduce((a, b) =>
+            structureCounts[a] > structureCounts[b] ? a : b
+        );
+
+        // remove old and add new paint bucket
+        paintBucketService.removePaintBucket(machine.bucket.id);
+        const newBucket = paintBucketService.addPaintBucket(
+            new Ingredient(
+                null,
+                newColor,
+                shakeDurationMs,
+                machine.mixSpeed,
+                Structure[newStructure]
+            )
+        );
+        console.log(newBucket);
+        console.log(paintBucketService.getAllPaintBuckets());
+
+        // reset machine
+        machine.bucket = null;
+        machine.shakeStart = 0;
+        storageService.saveToLocalStorage(storageKey, this.machines);
     }
 }
