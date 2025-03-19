@@ -146,21 +146,25 @@ export class MachineService {
 
         // remove old and add new paint bucket
         paintBucketService.removePaintBucket(machine.bucket.id);
-        const newBucket = paintBucketService.addPaintBucket(
+        paintBucketService.addPaintBucket([
             new Ingredient(
                 null,
                 newColor,
                 shakeDurationMs,
                 machine.mixSpeed,
                 Structure[newStructure]
-            )
-        );
-        console.log(newBucket);
-        console.log(paintBucketService.getAllPaintBuckets());
+            ),
+        ]);
 
         // reset machine
         machine.bucket = null;
         machine.shakeStart = 0;
-        storageService.saveToLocalStorage(storageKey, this.machines);
+
+        const machines = this.getAllMachines();
+        const index = machines.findIndex((m) => m.id === machine.id);
+        machines[index] = machine;
+
+        storageService.saveToLocalStorage(storageKey, machines);
+        console.log(this.getAllMachines());
     }
 }

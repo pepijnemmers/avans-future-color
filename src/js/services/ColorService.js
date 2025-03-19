@@ -30,7 +30,34 @@ export class ColorService {
      * @returns {string} new color after mixing (hex format)
      */
     mixColors(colors) {
-        const color = "#000000";
+        const mixChannel = (channelValues) => {
+            const total = channelValues.reduce((sum, value) => sum + value, 0);
+            return Math.round(total / channelValues.length);
+        };
+
+        const hexToRgbChannels = (hex) => [
+            parseInt(hex.slice(1, 3), 16),
+            parseInt(hex.slice(3, 5), 16),
+            parseInt(hex.slice(5, 7), 16),
+        ];
+
+        const mixedRgbChannels = colors
+            .map(hexToRgbChannels)
+            .reduce(
+                (acc, channels) => {
+                    acc[0].push(channels[0]);
+                    acc[1].push(channels[1]);
+                    acc[2].push(channels[2]);
+                    return acc;
+                },
+                [[], [], []]
+            )
+            .map(mixChannel);
+
+        const color = `#${mixedRgbChannels
+            .map((channel) => channel.toString(16).padStart(2, "0"))
+            .join("")}`;
+
         return color;
     }
 

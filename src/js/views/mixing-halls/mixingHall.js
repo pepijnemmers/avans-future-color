@@ -5,7 +5,7 @@ import { renderMachine } from "./machine.js";
 /**
  * @returns {template} The template with mixing hall
  */
-export function renderMixingHallPanel(mixingHall) {
+export function renderMixingHallPanel(mixingHall, appjs) {
     let machines = machineService.getAllMachinesByMixingHall(mixingHall);
     renderMachines(mixingHall, machines);
 
@@ -20,7 +20,9 @@ export function renderMixingHallPanel(mixingHall) {
                     machines.length > 0
                         ? machines
                               .map(
-                                  (machine) => renderMachine(machine, machineService).outerHTML
+                                  (machine) =>
+                                      renderMachine(machine, machineService)
+                                          .outerHTML
                               )
                               .join("")
                         : '<p class="text-center text-gray-600 italic py-4 w-full">Er zijn nog geen machines in deze menghal</p>'
@@ -43,12 +45,17 @@ function renderMachines(mixingHall, machines) {
         if (!mixingHallElement) return;
 
         // check if a machine has changed
-        const newMachines = machineService.getAllMachinesByMixingHall(mixingHall);
+        const newMachines =
+            machineService.getAllMachinesByMixingHall(mixingHall);
         if (!_.isEqual(machines, newMachines)) {
             mixingHallElement.innerHTML = machines
-                .map((machine) => renderMachine(machine, machineService).outerHTML)
+                .map(
+                    (machine) =>
+                        renderMachine(machine, machineService).outerHTML
+                )
                 .join("");
             machines = newMachines;
+            // todo: refresh the bucketpanel
         }
     }, 1000);
 }
