@@ -1,7 +1,10 @@
 import { StorageService } from "../services/LocalStorageService.js";
+import { PaintBucketService } from "./PaintBucketService.js";
 
+const bucketService = new PaintBucketService();
 const storageService = new StorageService();
 const storageKey = "colorFormat";
+const storageKeyColorGrid = "colorGrid";
 
 export class ColorService {
     static instance;
@@ -22,6 +25,52 @@ export class ColorService {
             ColorService.instance = new ColorService();
         }
         return ColorService.instance;
+    }
+
+    /**
+     * Add a color to the color grid
+     * @param {string | null} bucketId
+     * @param {number} colorGridId
+     */
+    addBucketToColorGrid(bucketId, colorGridId) {
+        const bucket = bucketService.getPainBucketById(bucketId);
+        const color = bucket.ingredients[0].hexColor;
+
+        this.colorGrid = this.getColorGridItems();
+        this.colorGrid[colorGridId] = color;
+        storageService.saveToLocalStorage(storageKeyColorGrid, this.colorGrid);
+    }
+
+    /**
+     * remove a color from the color grid
+     * @param {string} colorGridId
+     * @returns {string[]} array of colors in the color grid
+     */
+    removeColorFromColorGrid(colorGridId) {
+        this.colorGrid = this.getColorGridItems();
+        this.colorGrid[colorGridId] = null;
+        storageService.saveToLocalStorage(storageKeyColorGrid, this.colorGrid);
+
+        return this.colorGrid;
+    }
+
+    /**
+     * Get all colors in the color grid
+     * @returns {string[]} array of colors in the color grid
+     */
+    getColorGridItems() {
+        this.colorGrid =
+            storageService.loadFromLocalStorage(storageKeyColorGrid);
+
+        if (!this.colorGrid || this.colorGrid.length !== 9) {
+            this.colorGrid = Array(9).fill(null);
+            storageService.saveToLocalStorage(
+                storageKeyColorGrid,
+                this.colorGrid
+            );
+        }
+
+        return this.colorGrid;
     }
 
     /**
@@ -83,6 +132,24 @@ export class ColorService {
     }
 
     /**
+     * Insert one hex color and get a list of triadic colors
+     * @param {string} hexColor
+     * @returns {string[]} array of 3 colors in hex format
+     */
+    getTriadicColors(hexColor) {
+        const hsl = this.hexToHsl(hexColor).replace(/\s/g, "");
+        const h = parseInt(hsl.slice(4, 7));
+        const s = parseInt(hsl.slice(11, 14));
+        const l = parseInt(hsl.slice(15, 18));
+
+        const triadic1 = this.hslToHex((h + 120) % 360, s, l);
+        const triadic2 = this.hslToHex((h + 240) % 360, s, l);
+
+        // todo: niet altijd goede kleur komt eruit, soms wel maar soms niet
+        return [hexColor, triadic1, triadic2];
+    }
+
+    /**
      * Convert hex color to rgb format
      * @param {string} hexColor
      * @returns {string} rgb color
@@ -135,5 +202,45 @@ export class ColorService {
         l = (l * 100).toFixed(0);
 
         return `hsl(${h}deg, ${s}%, ${l}%)`;
+    }
+
+    /**
+     * Convert hsl color to hex format
+     * @param {number} h
+     * @param {number} s
+     * @param {number} l
+     * @returns {string} hex color
+     */
+    hslToHex(h, s, l) {
+        h /= 360;
+        s /= 100;
+        l /= 100;
+        let r, g, b;
+
+        if (s === 0) {
+            r = g = b = l;
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        const toHex = (x) => {
+            const hex = Math.round(x * 255).toString(16);
+            return hex.length === 1 ? "0" + hex : hex;
+        };
+
+        return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
 }

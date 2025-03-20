@@ -70,7 +70,7 @@ function renderBucket(bucket) {
         <div class="flex flex-col items-center">
             <div 
                 class="flex flex-col items-center"
-                draggable="${bucket.ingredients.length > 1 ? "true" : "false"}"
+                draggable="${bucket.ingredients.length > 0 ? "true" : "false"}"
             >
                 ${color ? bucketIcon(color, false) : bucketIcon(null, true)}
                 <p class="text-center font-medium !mb-0 mt-2">${label}</p>

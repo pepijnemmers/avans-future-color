@@ -75,6 +75,12 @@ input[type="color"]::-webkit-color-swatch {
     @apply block w-full;
 }
 
+.model {
+    @apply fixed left-[50%] top-[50%] translate-[-50%] bg-white border border-gray-200 py-4 px-6 rounded-md;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), 0 0 10px 100vw rgba(0, 0, 0, 0.1);
+}
+
 .ingredient * {
     @apply transition-opacity;
 }
@@ -92,15 +98,18 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .paint-bucket,
-.mix-machine .dropzone {
+.mix-machine .dropzone,
+.color-grid-tile .dropzone {
     @apply outline-0 outline-dashed outline-gray-300 rounded-md transition-colors;
 }
 .paint-bucket.dropzone,
-.mix-machine .dropzone {
+.mix-machine .dropzone,
+.color-grid-tile .dropzone {
     @apply outline-2;
 }
 .paint-bucket.dropzone.dragover,
-.mix-machine.dragover .dropzone {
+.mix-machine.dragover .dropzone,
+.color-grid-tile.dragover .dropzone {
     @apply bg-gray-100 outline-gray-500;
 }
 
@@ -145,4 +154,11 @@ progress[value]::-webkit-progress-value {
         -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25));
     background-color: #007a55;
     background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+
+.color-grid-tile {
+    @apply relative h-32 w-32;
+}
+.color-grid-tile .dropzone {
+    @apply absolute inset-3 text-gray-500 grid place-items-center text-center text-sm;
 }

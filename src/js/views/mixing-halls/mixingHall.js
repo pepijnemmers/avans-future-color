@@ -1,4 +1,3 @@
-import { MachineStatus } from "../../enums/MachineStatus.js";
 import { MachineService } from "../../services/MachineService.js";
 import { renderMachine } from "./machine.js";
 
