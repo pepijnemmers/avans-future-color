@@ -104,10 +104,7 @@ function checkMachineStatus(machine, machineService) {
         cancelable: true,
     });
 
-    // todo: machines doesnt refresh well, probably because of the interval doesnt clear/end
-    // !update, machine refreshes well, but the resetMachineAndSaveNewMix function runs 8 times atleast
     const updateProgress = () => {
-        console.log("update progress");
         if (!machine.bucket) {
             clearInterval(intervalId);
             return;
@@ -129,8 +126,6 @@ function checkMachineStatus(machine, machineService) {
             machineService.resetMachineAndSaveNewMix(machine, shakeDurationMs);
             machineStatus = MachineStatus.EMPTY;
             clearInterval(intervalId);
-
-            console.log("refreshForm");
             refreshForm.dispatchEvent(submitEvent);
         }
     };

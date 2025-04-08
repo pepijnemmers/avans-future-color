@@ -164,6 +164,5 @@ export class MachineService {
         machines[index] = machine;
 
         storageService.saveToLocalStorage(storageKey, machines);
-        console.log(this.getAllMachines());
     }
 }

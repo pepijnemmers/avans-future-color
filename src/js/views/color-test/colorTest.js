@@ -5,8 +5,6 @@ import { ColorService } from "../../services/ColorService.js";
  */
 export function renderColorTestPanel() {
     const gridItems = service.getColorGridItems();
-    console.log(gridItems);
-
     const template = document.createElement("template");
     template.innerHTML = renderGrid(gridItems);
     return template;
