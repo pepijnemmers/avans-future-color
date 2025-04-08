@@ -287,16 +287,18 @@ function colorTestTriadic(formData) {
 
     let content =
         "<h2>Triadic color scheme</h2><p>Verander evt. rechtboven in het scherm de kleurformat</p>";
+    let colorContent = document.createElement("div");
+    colorContent.classList.add("flex", "mb-2", "overflow-hidden", "rounded-md");
     triadicColors.forEach((color) => {
-        content += `
-            <div class="flex items-center gap-4 mb-2">
-                <div class="w-12 h-8" style="background-color: ${color}"></div> 
-                <p class="font-bold !m-0">${colorService.colorToSelectedFormat(
+        colorContent.innerHTML += `
+            <div class="flex items-end h-32 w-56" style="background-color: ${color}">
+                <p class="mx-auto !mb-0 w-fit font-bold p-1 bg-white rounded-t-md">${colorService.colorToSelectedFormat(
                     color
                 )}</p>
             </div>
         `;
     });
+    content += colorContent.outerHTML;
     createModal(content, null, true);
 }
 

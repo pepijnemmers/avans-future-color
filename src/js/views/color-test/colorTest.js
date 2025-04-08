@@ -39,8 +39,6 @@ function renderGrid(gridItems) {
         "border-gray-200"
     );
 
-    console.log(gridItemsWithColorFormat);
-
     // Create the grid items
     for (let i = 0; i < 9; i++) {
         const tile = document.createElement("div");
