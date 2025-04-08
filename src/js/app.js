@@ -12,6 +12,7 @@ import { PaintBucketService } from "./services/PaintBucketService.js";
 import { renderMachineForm } from "./views/mixing-halls/createMachine.js";
 import { MachineService } from "./services/MachineService.js";
 import { ColorService } from "./services/ColorService.js";
+import { WeatherService } from "./services/WeatherService.js";
 
 //** VARIABLES **/
 const navItems = [
@@ -44,6 +45,7 @@ const ingredientService = IngredientService.getInstance();
 const paintBucketService = PaintBucketService.getInstance();
 const machineService = MachineService.getInstance();
 const colorService = ColorService.getInstance();
+const weatherService = WeatherService.getInstance();
 
 //** RENDER APP **/
 const app = document.getElementById("app");
@@ -108,7 +110,11 @@ function refreshColumns() {
     leftColumn.appendChild(page);
     leftColumn.appendChild(renderBucketPanel().content.cloneNode(true));
 
-    rightColumn.appendChild(renderWeatherPanel().content.cloneNode(true));
+    rightColumn.appendChild(
+        renderWeatherPanel(
+            weatherService.getWeather()?.location?.name || null
+        ).content.cloneNode(true)
+    );
     rightColumn.appendChild(renderIngredientPanel().content.cloneNode(true));
 
     // fill app
@@ -179,6 +185,9 @@ document.addEventListener("submit", (e) => {
         case "refresh":
             refreshApp(null);
             break;
+        case "weather":
+            getWeather(formData);
+            break;
         case "createIngredient":
             addIngredient(formData);
             break;
@@ -208,6 +217,27 @@ document.addEventListener("submit", (e) => {
             break;
     }
 });
+
+// Weather
+async function getWeather(formData) {
+    weatherService.clearWeather();
+
+    let location = formData.get("location");
+    if (!location) return;
+    if (location.toLowerCase().trim().replace(/\s/g, "") === "mijnlocatie") {
+        location = "auto:ip";
+    }
+
+    const weather = await weatherService.saveWeatherByLocation(location);
+    if (!weather || weather.length === 0) {
+        alert(
+            "Geen weer informatie gevonden. Probeer het opnieuw, of een andere locatie"
+        );
+        return;
+    }
+
+    refreshApp(null);
+}
 
 // Ingredients
 function addIngredient(formData) {
