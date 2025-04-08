@@ -40,7 +40,7 @@ export class WeatherService {
      * @returns {object} The weather object
      */
     async getWeatherByLocation(location) {
-        const url = `http://api.weatherapi.com/v1/current.json?lang=nl&key=${apiKey}&q=${location}`;
+        const url = `https://api.weatherapi.com/v1/current.json?lang=nl&key=${apiKey}&q=${location}`;
 
         return fetch(url)
             .then((response) => {
