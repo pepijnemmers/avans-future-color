@@ -94,7 +94,8 @@ export class WeatherService {
      * @returns {boolean} True if it is raining or snowing, false otherwise
      */
     isRainingOrSnowing() {
-        return this.weather.current.precip_mm > 0;
+        if (!this.weather) return false;
+        return this.weather?.current?.precip_mm > 0;
     }
 
     /**
@@ -102,7 +103,8 @@ export class WeatherService {
      * @returns {boolean} True if the temperature is above 35 degrees Celsius, false otherwise
      */
     isAbove35degrees() {
-        return this.weather.current.temp_c > 35;
+        if (!this.weather) return false;
+        return this.weather?.current?.temp_c > 35;
     }
 
     /**
@@ -110,6 +112,7 @@ export class WeatherService {
      * @returns {boolean} True if the temperature is below 10 degrees Celsius, false otherwise
      */
     isBelow10degrees() {
-        return this.weather.current.temp_c < 10;
+        if (!this.weather) return false;
+        return this.weather?.current?.temp_c < 10;
     }
 }

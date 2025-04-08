@@ -42,11 +42,11 @@ function getWeather() {
         return `
             <div class="flex items-center gap-4 mt-4">
                 <div class="flex flex-col items-center">
-                    <img src="${weather.current.condition.icon}" 
-                        alt="${weather.current.condition.text}" 
+                    <img src="${weather?.current?.condition?.icon}" 
+                        alt="${weather?.current?.condition?.text}" 
                         class="w-14 h-14 -my-4 object-contain">
                     <span class="font-bold text-gray-600 pt-1">
-                        ${weather.current.temp_c}°C
+                        ${weather?.current?.temp_c}°C
                     </span>
                 </div>
                 <div>
