@@ -23,3 +23,9 @@ Alternatively, you can use the following command:
 ```bash
 npx @tailwindcss/cli -i ./src/assets/styles/main.css -o ./src/assets/styles/output.css --watch
 ```
+
+### Weer voorbeeld locaties
+
+-   Gebruik voor normaal weer `Tilburg`
+-   Voor koud weer of neerslag gebruik `Storslett`
+-   Voor warm weer >35deg gebruikt `Kanel`

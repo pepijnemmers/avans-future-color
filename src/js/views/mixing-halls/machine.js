@@ -2,8 +2,10 @@ import { Machine } from "../../models/Machine.js";
 import { MachineStatus } from "../../enums/MachineStatus.js";
 import { bucketIcon } from "../paint-buckets/bucketIcon.js";
 import { MachineService } from "../../services/MachineService.js";
+import { WeatherService } from "../../services/WeatherService.js";
 
 let machineStatus;
+const weatherService = WeatherService.getInstance();
 
 /**
  * Render a single machine element
@@ -122,6 +124,13 @@ function checkMachineStatus(machine, machineService) {
             shakeDurationMs = mixTime;
         }
     });
+
+    // adjust shake duration by weather
+    if (weatherService.isRainingOrSnowing()) {
+        shakeDurationMs *= 1.1; // 10% longer
+    } else if (weatherService.isBelow10degrees()) {
+        shakeDurationMs *= 1.15; // 15% longer
+    }
 
     // update progress or save new bucket when done
     let intervalId;
