@@ -55,7 +55,7 @@ export class PaintBucketService {
 
     /**
      * remove a paint bucket from the list and local storage
-     * @param {string} id
+     * @param {string} id paint bucket id
      */
     removePaintBucket(id) {
         this.paintBuckets = this.paintBuckets.filter(

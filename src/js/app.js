@@ -23,7 +23,7 @@ const navItems = [
     {
         btnId: "navMixHall1",
         panel: renderMixingHallOnePanel,
-        pageTitle: "MenghalMenghal 1",
+        pageTitle: "Menghal 1",
     },
     {
         btnId: "navMixHall2",
@@ -163,7 +163,7 @@ storageService.saveToLocalStorage("colorFormat", colorFormat.value);
 
 colorFormat.addEventListener("change", (e) => {
     storageService.saveToLocalStorage("colorFormat", e.target.value);
-    refreshApp("home");
+    refreshApp(null);
 });
 
 //** FORM SUBMISSIONS **/
@@ -176,6 +176,9 @@ document.addEventListener("submit", (e) => {
     const formData = new FormData(e.target);
 
     switch (e.target.dataset.action) {
+        case "refresh":
+            refreshApp(null);
+            break;
         case "createIngredient":
             addIngredient(formData);
             break;
@@ -259,10 +262,13 @@ function deleteMachine(formData) {
 }
 function addBucketToMachine(bucketId, machineId) {
     const added = machineService.addBucketToMachine(bucketId, machineId);
-    if (!added)
+    if (!added) {
         alert(
             "Deze bucket kan niet worden toegevoegd aan deze machine. Mogelijk is de mix snelheid niet gelijk of wordt de machine al gebruikt."
         );
+    } else {
+        paintBucketService.removePaintBucket(bucketId);
+    }
     refreshApp();
 }
 

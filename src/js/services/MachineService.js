@@ -145,7 +145,6 @@ export class MachineService {
         );
 
         // remove old and add new paint bucket
-        paintBucketService.removePaintBucket(machine.bucket.id);
         paintBucketService.addPaintBucket([
             new Ingredient(
                 null,

@@ -63,7 +63,9 @@ export function renderMachine(machine, machineService) {
                     ${
                         machineStatus === MachineStatus.EMPTY
                             ? "<p class='text-emerald-700 font-bold text-xl'>Vrij</p>"
-                            : "<progress id='machineProgressBar' value='0' max='100' class='w-[50%] h-5 rounded-full'></progress>"
+                            : "<progress id='machineProgressBar-" +
+                              machine.id +
+                              "' value='0' max='100' class='w-[50%] h-5 rounded-full'></progress>"
                     }
                 </div>
                 <div class="flex justify-between items-center">
@@ -96,11 +98,16 @@ function checkMachineStatus(machine, machineService) {
 
     // update progress or save new bucket when done
     let intervalId;
-    console.log(intervalId);
+    const refreshForm = document.getElementById("refreshForm");
+    const submitEvent = new Event("submit", {
+        bubbles: true,
+        cancelable: true,
+    });
 
     // todo: machines doesnt refresh well, probably because of the interval doesnt clear/end
     // !update, machine refreshes well, but the resetMachineAndSaveNewMix function runs 8 times atleast
     const updateProgress = () => {
+        console.log("update progress");
         if (!machine.bucket) {
             clearInterval(intervalId);
             return;
@@ -108,7 +115,9 @@ function checkMachineStatus(machine, machineService) {
 
         const progress =
             ((Date.now() - machine.shakeStart) / shakeDurationMs) * 100;
-        let progressBar = document.getElementById("machineProgressBar");
+        let progressBar = document.getElementById(
+            "machineProgressBar-" + machine.id
+        );
         if (progressBar) progressBar.value = progress;
 
         if (machine.shakeStart + shakeDurationMs < Date.now()) {
@@ -120,6 +129,9 @@ function checkMachineStatus(machine, machineService) {
             machineService.resetMachineAndSaveNewMix(machine, shakeDurationMs);
             machineStatus = MachineStatus.EMPTY;
             clearInterval(intervalId);
+
+            console.log("refreshForm");
+            refreshForm.dispatchEvent(submitEvent);
         }
     };
 

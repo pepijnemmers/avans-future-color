@@ -4,9 +4,8 @@ import { renderMachine } from "./machine.js";
 /**
  * @returns {template} The template with mixing hall
  */
-export function renderMixingHallPanel(mixingHall, appjs) {
+export function renderMixingHallPanel(mixingHall) {
     let machines = machineService.getAllMachinesByMixingHall(mixingHall);
-    renderMachines(mixingHall, machines);
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -34,27 +33,3 @@ export function renderMixingHallPanel(mixingHall, appjs) {
 
 // services
 const machineService = MachineService.getInstance();
-
-// render all machines
-function renderMachines(mixingHall, machines) {
-    let mixingHallElement = document.getElementById("mixingHall");
-
-    setInterval(() => {
-        mixingHallElement ??= document.getElementById("mixingHall");
-        if (!mixingHallElement) return;
-
-        // check if a machine has changed
-        const newMachines =
-            machineService.getAllMachinesByMixingHall(mixingHall);
-        if (!_.isEqual(machines, newMachines)) {
-            mixingHallElement.innerHTML = machines
-                .map(
-                    (machine) =>
-                        renderMachine(machine, machineService).outerHTML
-                )
-                .join("");
-            machines = newMachines;
-            // todo: refresh the bucketpanel
-        }
-    }, 1000);
-}
