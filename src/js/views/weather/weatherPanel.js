@@ -32,10 +32,10 @@ export function renderWeatherPanel(location) {
 }
 
 // Service
-const service = WeatherService.getInstance();
+const weatherService = WeatherService.getInstance();
 
 function getWeather() {
-    const weather = service.getWeather();
+    const weather = weatherService.getWeather();
     if (!weather || weather.length === 0) {
         return `<p class="text-center text-gray-600 italic m-0 pt-4">Geen weergegevens gevonden</p>`;
     } else {
@@ -57,23 +57,13 @@ function getWeather() {
     }
 }
 
-function getWeatherDependency(weather) {
-    let dependency = "Er zijn geen beïnvloedingen door het weer.";
-
-    // neerslag > 10% meer mengtijd
-    if (weather.current.precip_mm > 0) {
-        dependency = "De machines hebben 10% meer mengtijd vanwege het weer.";
+function getWeatherDependency() {
+    if (weatherService.isRainingOrSnowing()) {
+        return "De machines hebben 10% meer mengtijd vanwege het weer.";
+    } else if (weatherService.isAbove35degrees()) {
+        return "Er mag maximaal 1 machine draaien vanwege het weer.";
+    } else if (weatherService.isBelow10degrees()) {
+        return "De machines hebben 15% meer mengtijd vanwege het weer.";
     }
-
-    // boven 35 graden > max. 1 mengmachine tegelijk
-    if (weather.current.temp_c > 35) {
-        dependency = "Er mag maximaal 1 machine draaien vanwege het weer.";
-    }
-
-    // onder 10 graden > 15% langer mengen
-    if (weather.current.temp_c < 10) {
-        dependency = "De machines hebben 15% meer mengtijd vanwege het weer.";
-    }
-
-    return dependency;
+    return "Er zijn geen beïnvloedingen door het weer.";
 }

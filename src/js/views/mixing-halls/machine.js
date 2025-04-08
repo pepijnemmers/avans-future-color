@@ -9,11 +9,19 @@ let machineStatus;
  * Render a single machine element
  * @param {Machine} machine
  * @param {MachineService} machineService
+ * @param {boolean} isDisabledForWeather
  * @returns {HTMLElement} The machine element
  */
-export function renderMachine(machine, machineService) {
+export function renderMachine(machine, machineService, isDisabledForWeather) {
     checkMachineStatus(machine, machineService);
-    machineStatus = machine.bucket ? MachineStatus.MIXING : MachineStatus.EMPTY;
+
+    if (isDisabledForWeather) {
+        machineStatus = MachineStatus.CLOSED_FOR_WEATHER;
+    } else {
+        machineStatus = machine.bucket
+            ? MachineStatus.MIXING
+            : MachineStatus.EMPTY;
+    }
 
     const machineElement = document.createElement("div");
     machineElement.classList.add("mix-machine");
@@ -41,11 +49,22 @@ export function renderMachine(machine, machineService) {
                 !machine.bucket
                     ? `
                         <div
-                            class="flex justify-between items-center dropzone"
+                            class="flex justify-between items-center ${
+                                machineStatus === MachineStatus.EMPTY
+                                    ? "dropzone"
+                                    : ""
+                            }"
                             data-id="${machine.id}"
                         >
                             <p class="text-center text-gray-600 italic py-8 px-4 !mb-0 max-w-[230px]">
-                                Drag & drop een verf pot om te mengen
+                                ${
+                                    machineStatus === MachineStatus.EMPTY
+                                        ? "Drag & drop een verf pot om te mengen"
+                                        : machineStatus ===
+                                          MachineStatus.CLOSED_FOR_WEATHER
+                                        ? "Machine gesloten vanwege het warme weer"
+                                        : "Machine gesloten vanwege een fout"
+                                }
                             </p>
                         </div>
                     `
@@ -63,9 +82,17 @@ export function renderMachine(machine, machineService) {
                     ${
                         machineStatus === MachineStatus.EMPTY
                             ? "<p class='text-emerald-700 font-bold text-xl'>Vrij</p>"
-                            : "<progress id='machineProgressBar-" +
+                            : machineStatus === MachineStatus.MIXING
+                            ? "<progress id='machineProgressBar-" +
                               machine.id +
                               "' value='0' max='100' class='w-[50%] h-5 rounded-full'></progress>"
+                            : machineStatus === MachineStatus.CLOSED_FOR_WEATHER
+                            ? "<p class='text-red-700 font-bold text-xl'>" +
+                              MachineStatus.CLOSED_FOR_WEATHER.toString() +
+                              "</p>"
+                            : "<p class='text-red-700 font-bold text-xl'>" +
+                              MachineStatus.ERROR.toString() +
+                              "</p>"
                     }
                 </div>
                 <div class="flex justify-between items-center">

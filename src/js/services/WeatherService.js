@@ -88,4 +88,28 @@ export class WeatherService {
         this.weather = null;
         storageService.saveToLocalStorage(storageKey, this.weather);
     }
+
+    /**
+     * Check if the weather is raining or snowing
+     * @returns {boolean} True if it is raining or snowing, false otherwise
+     */
+    isRainingOrSnowing() {
+        return this.weather.current.precip_mm > 0;
+    }
+
+    /**
+     * Check if the weather is above 35 degrees Celsius
+     * @returns {boolean} True if the temperature is above 35 degrees Celsius, false otherwise
+     */
+    isAbove35degrees() {
+        return this.weather.current.temp_c > 35;
+    }
+
+    /**
+     * Check if the weather is below 10 degrees Celsius
+     * @returns {boolean} True if the temperature is below 10 degrees Celsius, false otherwise
+     */
+    isBelow10degrees() {
+        return this.weather.current.temp_c < 10;
+    }
 }
