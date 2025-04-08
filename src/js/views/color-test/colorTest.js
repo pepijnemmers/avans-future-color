@@ -12,9 +12,23 @@ export function renderColorTestPanel() {
     return template;
 }
 
+// Service
 const service = ColorService.getInstance();
 
+// Render grid
 function renderGrid(gridItems) {
+    // Get colors in correct format
+    const gridItemsWithColorFormat = [];
+    gridItems.forEach((item) => {
+        if (item) {
+            const color = service.colorToSelectedFormat(item);
+            gridItemsWithColorFormat.push(color);
+        } else {
+            gridItemsWithColorFormat.push(null);
+        }
+    });
+
+    // Create the grid container
     const tiles = document.createElement("div");
     tiles.classList.add(
         "tiles",
@@ -25,6 +39,9 @@ function renderGrid(gridItems) {
         "border-gray-200"
     );
 
+    console.log(gridItemsWithColorFormat);
+
+    // Create the grid items
     for (let i = 0; i < 9; i++) {
         const tile = document.createElement("div");
         tile.classList.add("tile");
@@ -38,7 +55,7 @@ function renderGrid(gridItems) {
             tile.innerHTML = `
                 <div class="color-grid-tile">
                     <div class="absolute inset-0" style="background-color: ${gridItems[i]}">
-                        <div class="mx-auto w-fit font-bold p-1 bg-white rounded-b-md">${gridItems[i]}</div>
+                        <div class="mx-auto w-fit font-bold p-1 bg-white rounded-b-md">${gridItemsWithColorFormat[i]}</div>
 
                         <form data-action="triadicModal" class="absolute top-[50%] translate-y-[-50%] w-fit font-bold p-1 bg-white rounded-e-md flex">
                             <input type="hidden" name="color" value="${gridItems[i]}">	

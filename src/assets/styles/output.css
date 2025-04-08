@@ -1123,7 +1123,7 @@ progress[value]::-webkit-progress-value {
 .color-grid-tile {
   position: relative;
   height: calc(var(--spacing) * 32);
-  width: calc(var(--spacing) * 32);
+  width: calc(var(--spacing) * 56);
 }
 .color-grid-tile .dropzone {
   position: absolute;

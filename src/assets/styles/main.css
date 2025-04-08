@@ -157,7 +157,7 @@ progress[value]::-webkit-progress-value {
 }
 
 .color-grid-tile {
-    @apply relative h-32 w-32;
+    @apply relative h-32 w-56;
 }
 .color-grid-tile .dropzone {
     @apply absolute inset-3 text-gray-500 grid place-items-center text-center text-sm;
