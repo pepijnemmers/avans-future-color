@@ -137,15 +137,19 @@ export class ColorService {
      * @returns {string[]} array of 3 colors in hex format
      */
     getTriadicColors(hexColor) {
-        const hsl = this.hexToHsl(hexColor).replace(/\s/g, "");
-        const h = parseInt(hsl.slice(4, 7));
-        const s = parseInt(hsl.slice(11, 14));
-        const l = parseInt(hsl.slice(15, 18));
+        const hslString = this.hexToHsl(hexColor);
+        const matches = hslString.match(
+            /hsl\((\d+)deg,\s*(\d+)%?,\s*(\d+)%?\)/
+        );
+        if (!matches) return [hexColor]; // fallback in case of bad match
+
+        const h = parseInt(matches[1]);
+        const s = parseInt(matches[2]);
+        const l = parseInt(matches[3]);
 
         const triadic1 = this.hslToHex((h + 120) % 360, s, l);
         const triadic2 = this.hslToHex((h + 240) % 360, s, l);
 
-        // todo: niet altijd goede kleur komt eruit, soms wel maar soms niet
         return [hexColor, triadic1, triadic2];
     }
 
