@@ -5,8 +5,5 @@
     },
     "scripts": {
         "watch-tailwind": "npx @tailwindcss/cli -i ./src/assets/styles/main.css -o ./src/assets/styles/output.css --watch"
-    },
-    "devDependencies": {
-        "@types/lodash": "^4.17.16"
     }
 }
